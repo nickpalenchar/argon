@@ -93,6 +93,11 @@ def get_template_source(template_name):
     return template_path
 
 
+def copy_within_dir(dirpath, dest):
+    for f in os.listdir(dirpath):
+        pass #TODO copy everything
+
+
 if __name__ == '__main__':
     name = sys.argv[1]
     user_values.parse_strings(sys.argv[2:])
