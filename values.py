@@ -14,7 +14,11 @@ class Values:
 
     def __dict__(self):
         return self._values
-    
+
+    def __getitem__(self, value):
+        return self._values[value]
+
+
     def parse_string(self, string):
         key, value = string.split('=', maxsplit=1)
         self._values[key] = value
