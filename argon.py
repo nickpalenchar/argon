@@ -3,6 +3,9 @@ import sys
 import shutil
 import re
 from values import Values
+import logging
+log = logging.getLogger('argan')
+log.setLevel(os.environ.get('ARGON_LOGLEVEL', 'WARNING'))
 
 
 class MissingRequiredValue(Exception):
@@ -22,13 +25,22 @@ def pre_main(name):
         pass
 
 
-def main(name, user_values):
+def main(name, user_values, workdir=WORKDIR, dest=''):
     src = get_template_source(name)
-    render_from_template(src, WORKDIR, user_values)
+    render_from_template(src, workdir, user_values)
+    move_to_destination(workdir, dest)
+
+
+def move_to_destination(start, dest):
+    cwd = os.getcwd()
+    shutil.move(os.path.join(cwd, start), os.path.join(cwd, dest))
 
 
 def render_from_template(src, dest, user_values):
-    shutil.copytree(src, dest)
+    cwd = os.getcwd()
+    abs_src = os.path.join(cwd, src)
+    abs_dest = os.path.join(cwd, dest)
+    shutil.copytree(abs_src, abs_dest)
     os.chmod(dest, 0o777)
     for oldname, newname in reversed(get_files_to_rename(dest, user_values)):
         os.rename(oldname, newname)
@@ -99,11 +111,13 @@ def copy_within_dir(dirpath, dest):
 
 
 if __name__ == '__main__':
+    #TODO: Error handling and override flag for FileExists exception
     name = sys.argv[1]
+    dest = sys.argv[2] if len(sys.argv) > 2 else ''
     user_values.parse_strings(sys.argv[2:])
     try:
         pre_main(name)
-        main(name, user_values)
+        main(name, user_values, dest)
     except KeyboardInterrupt:
         shutil.rmtree(os.path.join(WORKDIR, name))
 
