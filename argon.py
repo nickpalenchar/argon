@@ -27,6 +27,7 @@ def pre_main(name):
 
 def main(name, user_values, workdir=WORKDIR, dest=''):
     src = get_template_source(name)
+    print("WORKDIR", workdir)
     render_from_template(src, workdir, user_values)
     move_to_destination(workdir, dest)
 
@@ -117,7 +118,7 @@ if __name__ == '__main__':
     user_values.parse_strings(sys.argv[2:])
     try:
         pre_main(name)
-        main(name, user_values, dest)
+        main(name, user_values, dest=dest)
     except KeyboardInterrupt:
         shutil.rmtree(os.path.join(WORKDIR, name))
 
