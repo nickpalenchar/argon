@@ -4,6 +4,7 @@ import shutil
 import re
 from values import Values
 import logging
+from errors import TemplateBundleError
 log = logging.getLogger('argan')
 log.setLevel(os.environ.get('ARGON_LOGLEVEL', 'WARNING'))
 
@@ -13,11 +14,12 @@ class MissingRequiredValue(Exception):
 
 
 SRC = '/usr/local/templates'
+TEMPLATE_SRC = 'src' # name of the directory to look for within a template bundle
 WORKDIR = '/tmp/argon-tmp'
 user_values = Values()
 
 
-def pre_main(name):
+def pre_main():
     """Remove old workdirs before starting"""
     try:
         shutil.rmtree(os.path.join(WORKDIR))
@@ -26,8 +28,9 @@ def pre_main(name):
 
 
 def main(name, user_values, workdir=WORKDIR, dest=''):
-    src = get_template_source(name)
-    render_from_template(src, workdir, user_values)
+    template_bundle = get_template_bundle(name)
+    ensure_valid_bundle(template_bundle)
+    render_from_template(template_bundle, workdir, user_values)
     move_contents_to_destination(workdir, dest)
 
 
@@ -36,9 +39,14 @@ def move_contents_to_destination(start, dest):
         shutil.move(os.path.join(start, file), dest)
 
 
-def render_from_template(src, dest, user_values):
+def ensure_valid_bundle(template_bundle):
+    if TEMPLATE_SRC not in os.listdir(template_bundle):
+        raise TemplateBundleError(f'Missing required directory "{TEMPLATE_SRC}" in bundle')
+
+
+def render_from_template(template_bundle, dest, user_values):
     cwd = os.getcwd()
-    abs_src = os.path.join(cwd, src)
+    abs_src = os.path.join(cwd, template_bundle, TEMPLATE_SRC)
     abs_dest = os.path.join(cwd, dest)
     shutil.copytree(abs_src, abs_dest)
     os.chmod(dest, 0o777)
@@ -95,7 +103,7 @@ def render_str(string, user_values: Values):
     return re.sub('<%\s*([^(%>)]*\s*)%>', replacer, string, count=0)
 
 
-def get_template_source(template_name):
+def get_template_bundle(template_name):
     try:
         template_path = os.path.join(SRC, template_name)
         os.stat(template_path)
@@ -116,7 +124,7 @@ if __name__ == '__main__':
     dest = sys.argv[2] if len(sys.argv) > 2 else '.'
     # user_values.parse_strings(sys.argv[2:]) TODO: Should there even be an option to set values ahead of time?
     try:
-        pre_main(name)
+        pre_main()
         main(name, user_values, dest=dest)
     except KeyboardInterrupt:
         shutil.rmtree(os.path.join(WORKDIR, name))
