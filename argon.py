@@ -3,20 +3,18 @@ import sys
 import shutil
 import re
 from values import Values
+from config import Config
 import logging
-from errors import TemplateBundleError
-log = logging.getLogger('argan')
+from errors import *
+log = logging.getLogger('argon')
 log.setLevel(os.environ.get('ARGON_LOGLEVEL', 'WARNING'))
 
 
-class MissingRequiredValue(Exception):
-    pass
-
-
-SRC = '/usr/local/templates'
+# SRC = '/usr/local/templates'
 TEMPLATE_SRC = 'src' # name of the directory to look for within a template bundle
 WORKDIR = '/tmp/argon-tmp'
 user_values = Values()
+CONFIG = Config()
 
 
 def pre_main():
@@ -104,12 +102,19 @@ def render_str(string, user_values: Values):
 
 
 def get_template_bundle(template_name):
+    for path in CONFIG.argonPath:
+        template_bundle = find_template_bundle(os.path.expandvars(path), template_name)
+        if template_bundle:
+            return template_bundle
+    raise TemplateNotFound(f'No template with name {template_name} found!')
+
+
+def find_template_bundle(src, template_name):
     try:
-        template_path = os.path.join(SRC, template_name)
+        template_path = os.path.join(src, template_name)
         os.stat(template_path)
     except FileNotFoundError:
-        print(f'template {template_name} does not exist')
-        sys.exit(1)
+        return None
     return template_path
 
 
