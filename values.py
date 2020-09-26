@@ -18,7 +18,6 @@ class Values:
     def __getitem__(self, value):
         return self._values[value]
 
-
     def parse_string(self, string):
         key, value = string.split('=', maxsplit=1)
         self._values[key] = value
@@ -30,6 +29,7 @@ class Values:
     def prompt(self, key):
         value = input(f'Enter a value for {key}:\n> ')
         self._values[key] = value
+
 
 if __name__ == '__main__':
     import sys

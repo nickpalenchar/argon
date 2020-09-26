@@ -28,12 +28,12 @@ def pre_main(name):
 def main(name, user_values, workdir=WORKDIR, dest=''):
     src = get_template_source(name)
     render_from_template(src, workdir, user_values)
-    move_to_destination(workdir, dest)
+    move_contents_to_destination(workdir, dest)
 
 
-def move_to_destination(start, dest):
-    cwd = os.getcwd()
-    shutil.move(os.path.join(cwd, start), os.path.join(cwd, dest))
+def move_contents_to_destination(start, dest):
+    for file in os.listdir(start):
+        shutil.move(os.path.join(start, file), dest)
 
 
 def render_from_template(src, dest, user_values):
@@ -113,8 +113,8 @@ def copy_within_dir(dirpath, dest):
 if __name__ == '__main__':
     #TODO: Error handling and override flag for FileExists exception
     name = sys.argv[1]
-    dest = sys.argv[2] if len(sys.argv) > 2 else ''
-    user_values.parse_strings(sys.argv[2:])
+    dest = sys.argv[2] if len(sys.argv) > 2 else '.'
+    # user_values.parse_strings(sys.argv[2:]) TODO: Should there even be an option to set values ahead of time?
     try:
         pre_main(name)
         main(name, user_values, dest=dest)
