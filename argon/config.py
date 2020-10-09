@@ -1,14 +1,18 @@
 import os
 import yaml
-from yaml import FullLoader
 from collections import namedtuple
 import logging
 log = logging.getLogger('argon')
 
-DEFAULT_CONFIG = '.argonconfig.yaml'
+
+DEFAULT_CONFIG = os.path.join(
+    os.path.abspath(os.path.dirname(__file__)),
+    '.argonconfig.yaml'
+)
 VALID_CONFIG_FIELDS = ('argonPath',)
 
 configValues = namedtuple('ConfigValues', VALID_CONFIG_FIELDS)
+
 
 class Config:
 

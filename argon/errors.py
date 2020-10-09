@@ -4,11 +4,11 @@ class BaseException(Exception):
     pass
 
 
-class MissingRequiredValue(Exception):
+class MissingRequiredValue(BaseException):
     pass
 
 
-class TemplateBundleError(Exception):
+class TemplateBundleError(BaseException):
     """
     An error in the selected template bundle, such as incorrect formatting of the bundle
     and/or missing required parts.

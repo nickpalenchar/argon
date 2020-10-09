@@ -1,4 +1,4 @@
-# Standard argon configuration
+# Standard argon configuration: https://github.com/nickpalenchar/argon
 #
 # Argon will check in the following areas for a custom configuration file:
 # - macOS: $USER/.argonconfig.yaml
@@ -7,4 +7,4 @@
 
 # list of directories to search through. Add additional paths for your own template bundles.
 argonPath:
-  - '/usr/local/templates'
+  - '/usr/local/argon/templates'

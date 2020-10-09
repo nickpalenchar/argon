@@ -3,9 +3,9 @@ import sys
 import shutil
 import re
 from values import Values
-from config import Config
+from argon.config import Config
 import logging
-from errors import *
+from argon.errors import *
 log = logging.getLogger('argon')
 log.setLevel(os.environ.get('ARGON_LOGLEVEL', 'WARNING'))
 
@@ -15,6 +15,18 @@ TEMPLATE_SRC = 'src' # name of the directory to look for within a template bundl
 WORKDIR = '/tmp/argon-tmp'
 user_values = Values()
 CONFIG = Config()
+
+
+def new(name, dest='.'):
+    """Create new template. To be used by cli.py"""
+    #TODO: Error handling and override flag for FileExists exception
+    # user_values.parse_strings(sys.argv[2:]) TODO: Should there even be an option to set values ahead of time?
+    try:
+        pre_main()
+        main(name, user_values, dest=dest)
+    except KeyboardInterrupt:
+        shutil.rmtree(os.path.join(WORKDIR, name))
+
 
 
 def pre_main():
@@ -124,13 +136,8 @@ def copy_within_dir(dirpath, dest):
 
 
 if __name__ == '__main__':
-    #TODO: Error handling and override flag for FileExists exception
     name = sys.argv[1]
     dest = sys.argv[2] if len(sys.argv) > 2 else '.'
-    # user_values.parse_strings(sys.argv[2:]) TODO: Should there even be an option to set values ahead of time?
-    try:
-        pre_main()
-        main(name, user_values, dest=dest)
-    except KeyboardInterrupt:
-        shutil.rmtree(os.path.join(WORKDIR, name))
+    new(name, dest)
+
 
