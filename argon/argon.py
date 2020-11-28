@@ -4,6 +4,7 @@ import shutil
 import re
 from values import Values
 from argon.config import Config
+from argon.bundle_parsing import Bundle, InvalidBundle
 import logging
 from argon.errors import *
 log = logging.getLogger(__name__)
@@ -32,10 +33,20 @@ def new(args):
 
 def list(args):
     """
-    
     :param args:
     :return:
     """
+    bundles = []
+
+    for p in CONFIG.argonPath:
+        for filename in os.listdir(p):
+            try:
+                bundle = Bundle(os.path.join(p, filename))
+                bundles.append(bundle)
+            except InvalidBundle:
+                pass
+    print('\n'.join([b.name for b in bundles]))
+    return
 
 
 def pre_main():

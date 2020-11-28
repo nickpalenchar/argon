@@ -20,17 +20,15 @@ def handle_sigint(h, frame):
 def main():
     signal.signal(signal.SIGINT, handle_sigint)
     args = docopt.docopt(__doc__)
-    print(args)
     sys.exit(execute_command(args) or 0)
 
 
 def execute_command(args):
     command = getattr(argon, sys.argv[1], None)
-    if args['new']:
-        try:
-            argon.new(args)
-        except errors.BaseException as e:
-            return argon_error_messages(e)
+    try:
+        command(args)
+    except errors.BaseException as e:
+        return argon_error_messages(e)
 
 
 def argon_error_messages(exception):
