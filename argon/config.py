@@ -21,7 +21,7 @@ class Config:
     def __init__(self):
         if os.path.exists(os.path.expandvars(self.CONFIG_PATH_MACOS)):
             values = self.get_values_from_file(os.path.expandvars(self.CONFIG_PATH_MACOS))
-            log.info('Loaded custom config file at {CONFIG_PATH_MACOS}')
+            log.info(f'Loaded custom config file at {self.CONFIG_PATH_MACOS}')
         else:
             values = self.get_values_from_file(DEFAULT_CONFIG)
             log.info('Loaded default argonconfig file')
