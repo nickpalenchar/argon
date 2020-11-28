@@ -42,10 +42,12 @@ def list(args):
         for filename in os.listdir(p):
             try:
                 bundle = Bundle(os.path.join(p, filename))
-                bundles.append(bundle)
+                bundles.append(bundle.fmtstr())
+
             except InvalidBundle:
                 pass
-    print('\n'.join([b.name for b in bundles]))
+
+    print('\n'.join(bundles))
     return
 
 
