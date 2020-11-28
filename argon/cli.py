@@ -7,11 +7,18 @@ Usage:
 """
 import docopt
 import sys
+import signal
 from . import argon
 from . import errors
 
 
+def handle_sigint(h, frame):
+    print('')
+    sys.exit(1)
+
+
 def main():
+    signal.signal(signal.SIGINT, handle_sigint)
     args = docopt.docopt(__doc__)
     print(args)
     sys.exit(execute_command(args) or 0)
