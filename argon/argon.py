@@ -6,7 +6,7 @@ from values import Values
 from argon.config import Config
 import logging
 from argon.errors import *
-log = logging.getLogger('argon')
+log = logging.getLogger(__name__)
 log.setLevel(os.environ.get('ARGON_LOGLEVEL', 'WARNING'))
 
 
