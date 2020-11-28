@@ -25,9 +25,10 @@ def main():
 
 
 def execute_command(args):
+    command = getattr(argon, sys.argv[1], None)
     if args['new']:
         try:
-            argon.new(args['<name>'], args['<dir>'] or '.')
+            argon.new(args)
         except errors.BaseException as e:
             return argon_error_messages(e)
 

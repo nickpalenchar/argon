@@ -17,7 +17,9 @@ user_values = Values()
 CONFIG = Config()
 
 
-def new(name, dest='.'):
+def new(args):
+    name = args['<name>']
+    dest = args['<dir>'] or '.'
     """Create new template. To be used by cli.py"""
     #TODO: Error handling and override flag for FileExists exception
     # user_values.parse_strings(sys.argv[2:]) TODO: Should there even be an option to set values ahead of time?
