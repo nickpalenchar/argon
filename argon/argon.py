@@ -30,6 +30,13 @@ def new(args):
         shutil.rmtree(os.path.join(WORKDIR, name))
 
 
+def list(args):
+    """
+    
+    :param args:
+    :return:
+    """
+
 
 def pre_main():
     """Remove old workdirs before starting"""
