@@ -11,12 +11,28 @@ Many a times in programming will there be some "scaffolding" needed for various 
 
 Okay it's simple, the current root is hardcoded in /usr/local/templates/ (to be changed). Every directory is a **stack**. (For califynig purposes, we are defining a stack as a file or series of files/directories to generate based on given values).
 
-A stack has **3** parts:
+A stack has **2** parts:
 
-* `MANIFEST.yaml` (optional) - Has `help: description of the cli` as its only value. Used for later. 
-* `values.yaml` (optional) - Has lists of values and helpful descripton as to what they could be. Will use later.
+* `stack.yaml` (optional) - Sets metadata used by argon to determine things like name and required values.
 * src (required) - this is the directory that **actually contains the files you want generated**
 
+### bundle.yaml values
+
+All fields are optional.
+
+```yaml
+name: string # name that identifies stack to argon. Used with `argon new <name>`
+values:
+  - someName: someDescription # shortform, if `someName` is found in template, `someDescription` is printed as help text when prompting for a value
+  - name: someName # longform. someName is the name of the value in the template
+    description: someDescription # when matching someName, someDescription is printed as help text
+    default: defaultValue # if user gives no input, use this instead
+```
+
+When fields are omitted, argon will determine names based on the contents of the stack.
+
+* `name`: uses the top-level directory as the name
+* `values`: dynamically prompts values based on what is found in the templates at runtime. Descriptions are blank
 
 ## Templating syntax
 
@@ -36,7 +52,7 @@ hello, Nick!
 
 It looks weird, but you could make a directory named `<%foo%>`, and the entire directory would be named the value of foo on generation.
 
-(whitespace is optional for enclosing template tokens--I like `<% foo %>` when its in files, ond `<%foo%> for directory names, cause directories with spaces in their names, although legal, are very annoying.)
+(whitespace is optional for enclosing template tokens--I like `<% foo %>` when its in files, and `<%foo%> for directory names, cause directories with spaces in their names, although legal, are very annoying.)
 
 
 ## Generating files
@@ -44,6 +60,15 @@ It looks weird, but you could make a directory named `<%foo%>`, and the entire d
 Right now, its `python3 argon.py name-of-stack`. You can't provide values yet cause I'm out of time right now. You'll have to edit the source code on line 25.
 
 (Or just wait till the project is actually stable)
+
+
+# Configuration
+
+.argonconfig.yaml for customizing the cli beheivor
+
+## Environment variables
+
+`ARGON_CONFIG` - path to an `.argonconfig.yaml` file. **This overrides all other .argonconfig.yaml files**. Generally, it's used for testing
 
 
 ## Really Big TODOS:

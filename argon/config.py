@@ -4,12 +4,12 @@ from collections import namedtuple
 import logging
 log = logging.getLogger('argon')
 
-
 DEFAULT_CONFIG = os.path.join(
     os.path.abspath(os.path.dirname(__file__)),
     '.argonconfig.yaml'
 )
 VALID_CONFIG_FIELDS = ('argonPath',)
+ARGON_CONFIG_OVERRIDE = os.environ.get('ARGON_CONFIG')
 
 configValues = namedtuple('ConfigValues', VALID_CONFIG_FIELDS)
 
@@ -19,6 +19,8 @@ class Config:
     CONFIG_PATH_MACOS = '$HOME/.argonconfig.yaml'
 
     def __init__(self):
+        if ARGON_PATH := os.environ.get('ARGON_CONFIG') and os.path.exists(os.path.expandvars(ARGON_PATH)):
+
         if os.path.exists(os.path.expandvars(self.CONFIG_PATH_MACOS)):
             values = self.get_values_from_file(os.path.expandvars(self.CONFIG_PATH_MACOS))
             log.info(f'Loaded custom config file at {self.CONFIG_PATH_MACOS}')
