@@ -18,3 +18,7 @@ class TemplateBundleError(BaseException):
 
 class TemplateNotFound(BaseException):
     pass
+
+
+class FileExistsError(BaseException):
+    pass

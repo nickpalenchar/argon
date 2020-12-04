@@ -2,8 +2,12 @@
 argon - Generate projects from custom templates
 
 Usage:
-    argon new <name> [<dir>]
+    argon new <name> [--values <keyvalues>] [<dir>]
     argon list
+
+Options
+    --values    Supply key=value pairs to be used with a template, separated by commas.
+                e.g. foo=bar,baz=quix
 """
 import docopt
 import sys

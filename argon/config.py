@@ -1,3 +1,8 @@
+"""
+Singleton config object represents the various configuration settings available in argon. Initialization handles
+logic for determining what set of config to load.
+"""
+
 import os
 import yaml
 from collections import namedtuple
@@ -14,14 +19,19 @@ ARGON_CONFIG_OVERRIDE = os.environ.get('ARGON_CONFIG')
 configValues = namedtuple('ConfigValues', VALID_CONFIG_FIELDS)
 
 
+def get_config():
+    return os.environ.get('ARGON_CONFIG')
+
+
 class Config:
 
     CONFIG_PATH_MACOS = '$HOME/.argonconfig.yaml'
 
     def __init__(self):
-        if ARGON_PATH := os.environ.get('ARGON_CONFIG') and os.path.exists(os.path.expandvars(ARGON_PATH)):
-
-        if os.path.exists(os.path.expandvars(self.CONFIG_PATH_MACOS)):
+        if ARGON_PATH := get_config() and os.path.exists(os.path.expandvars(get_config())):
+            values = self.get_values_from_file(get_config())
+            log.info('Loaded custom config from environment variable $ARGON_CONFIG')
+        elif os.path.exists(os.path.expandvars(self.CONFIG_PATH_MACOS)):
             values = self.get_values_from_file(os.path.expandvars(self.CONFIG_PATH_MACOS))
             log.info(f'Loaded custom config file at {self.CONFIG_PATH_MACOS}')
         else:

@@ -4,7 +4,8 @@ import shutil
 import re
 from values import Values
 from argon.config import Config
-from argon.bundle_parsing import Bundle, InvalidBundle
+from argon.errors import FileExistsError
+from argon.stack_parsing import Bundle, InvalidBundle
 import logging
 from argon.errors import *
 log = logging.getLogger(__name__)
@@ -14,19 +15,30 @@ log.setLevel(os.environ.get('ARGON_LOGLEVEL', 'WARNING'))
 # SRC = '/usr/local/templates'
 TEMPLATE_SRC = 'src' # name of the directory to look for within a template bundle
 WORKDIR = '/tmp/argon-tmp'
-user_values = Values()
 CONFIG = Config()
 
 
 def new(args):
+
+    def parse_custom_values(s):
+        result = {}
+        values = [v for v in s.split(',') if v]
+        for pair in values:
+            try:
+                key, val = pair.split('=')
+                result[key] = val
+            except ValueError:
+                print('--values got an invalid format. Wants key=value pairs, separated by ,')
+                sys.exit(1)
+        return result
+
     name = args['<name>']
     dest = args['<dir>'] or '.'
+    values = args['<keyvalues>'] or ''
     """Create new template. To be used by cli.py"""
-    #TODO: Error handling and override flag for FileExists exception
-    # user_values.parse_strings(sys.argv[2:]) TODO: Should there even be an option to set values ahead of time?
     try:
         pre_main()
-        main(name, user_values, dest=dest)
+        main(name, Values(**parse_custom_values(values)), dest=dest)
     except KeyboardInterrupt:
         shutil.rmtree(os.path.join(WORKDIR, name))
 
@@ -68,7 +80,10 @@ def main(name, user_values, workdir=WORKDIR, dest=''):
 
 def move_contents_to_destination(start, dest):
     for file in os.listdir(start):
-        shutil.move(os.path.join(start, file), dest)
+        try:
+            shutil.move(os.path.join(start, file), dest)
+        except shutil.Error as e:
+            raise FileExistsError(e.args[0])
 
 
 def ensure_valid_bundle(template_bundle):

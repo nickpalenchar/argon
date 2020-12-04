@@ -10,7 +10,7 @@ class InvalidStringValue(Exception):
 class Values:
     
     def __init__(self, **values):
-        self._values = {}
+        self._values = values
 
     def __dict__(self):
         return self._values
