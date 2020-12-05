@@ -34,7 +34,7 @@ def new(args):
 
     name = args['<name>']
     dest = args['<dir>'] or '.'
-    values = args['<keyvalues>'] or ''
+    values = args['--values'] or ''
     """Create new template. To be used by cli.py"""
     try:
         pre_main()
@@ -58,6 +58,8 @@ def list(args):
 
             except InvalidBundle:
                 pass
+    if not bundles:
+        print('(no stacks found)')
 
     print('\n'.join(bundles))
     return

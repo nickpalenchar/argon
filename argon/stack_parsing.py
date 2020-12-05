@@ -6,7 +6,10 @@ bundles should be constructed with the Bundle class, rather than operating on ra
 
 import os
 import yaml
+import logging
 from collections import ChainMap
+
+log = logging.getLogger('argon')
 
 STACKS = ('bundle.yml', 'bundle.yaml')
 
@@ -46,6 +49,6 @@ class Bundle:
                     bundle_config = yaml.safe_load(fh.read()) or {}
 
                     return bundle_config
-            except FileNotFoundError:
+            except (FileNotFoundError, NotADirectoryError):
                 pass
-        raise InvalidBundle(f'Bundle at {workdir} has no bundle.yml file')
+        return {}
