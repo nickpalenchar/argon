@@ -5,7 +5,7 @@ import re
 from values import Values
 from argon.config import Config
 from argon.errors import FileExistsError
-from argon.stack_parsing import Bundle, InvalidBundle
+from argon.stack_parsing import Stack, InvalidBundle
 import logging
 from argon.errors import *
 log = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ def list(args):
     for p in CONFIG.argonPath:
         for filename in os.listdir(p):
             try:
-                bundle = Bundle(os.path.join(p, filename))
+                bundle = Stack(os.path.join(p, filename))
                 bundles.append(bundle.fmtstr())
 
             except InvalidBundle:

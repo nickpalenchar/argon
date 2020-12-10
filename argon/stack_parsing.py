@@ -1,7 +1,7 @@
 """
 The interface for an argon bundle, derived from a directory's containing bundle.yml
 
-bundles should be constructed with the Bundle class, rather than operating on raw contents
+bundles should be constructed with the Stack class, rather than operating on raw contents
 """
 
 import os
@@ -13,12 +13,13 @@ log = logging.getLogger('argon')
 
 STACKS = ('bundle.yml', 'bundle.yaml')
 
+
 class InvalidBundle(Exception):
     """Raised when bundle.yml is missing or invalid"""
     pass
 
 
-class Bundle:
+class Stack:
 
     def __init__(self, workdir):
         config = ChainMap(self._parse_yaml(workdir), self._get_defaults(workdir))
