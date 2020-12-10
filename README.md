@@ -4,7 +4,9 @@
 
 ## Motivation
 
-Many a times in programming will there be some "scaffolding" needed for various projects, which usually consists of lots of same text and a little bit of different text. Mostly it's for python cli's I make. While I could copy and paste everything and then do a few replaces, it's much more fun to automate.
+Many a times in programming will there be some "scaffolding" needed for various projects, which usually consists of lots of same text and a little bit of different text. Argon lets you create a bundle of templates (called a Stack) and generate different values into them! 
+
+This is mostly for python cli's I make. While I could copy and paste everything and then do a few replaces, it's much more fun to automate.
 
 
 ## Stack structure
