@@ -11,7 +11,7 @@ from collections import ChainMap
 
 log = logging.getLogger('argon')
 
-STACKS = ('bundle.yml', 'bundle.yaml')
+STACKS = ('stack.yml', 'stack.yaml')
 
 
 class InvalidBundle(Exception):
