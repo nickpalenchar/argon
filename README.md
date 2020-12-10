@@ -58,16 +58,14 @@ It looks weird, but you could make a directory named `<%foo%>`, and the entire d
 (whitespace is optional for enclosing template tokens--I like `<% foo %>` when its in files, and `<%foo%> for directory names, cause directories with spaces in their names, although legal, are very annoying.)
 
 
-## Generating files
+## Installing
 
-Right now, its `python3 argon.py name-of-stack`. You can't provide values yet cause I'm out of time right now. You'll have to edit the source code on line 25.
-
-(Or just wait till the project is actually stable)
+From source, you can run `pip3 install path/to/argon`
 
 
 # Configuration
 
-.argonconfig.yaml for customizing the cli beheivor
+`.argonconfig.yaml` for customizing the cli beheivor
 
 ## Environment variables
 
@@ -76,6 +74,7 @@ Right now, its `python3 argon.py name-of-stack`. You can't provide values yet ca
 
 ## Really Big TODOS:
 
-* process for providing values for templates
-* prompt for a value if its missing
-* reading the values.yml file to provide hints and stuff
+* ~process for providing values for templates~
+* ~prompt for a value if its missing~
+* reading the stack.yml file to provide hints and stuff
+* more documentation
