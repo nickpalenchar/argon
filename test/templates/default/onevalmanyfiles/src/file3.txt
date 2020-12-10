@@ -1,0 +1,1 @@
+<% global %> is at the start of this line.
