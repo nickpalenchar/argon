@@ -4,7 +4,8 @@
 
 ## Motivation
 
-Many a times in programming will there be some "scaffolding" needed for various projects, which usually consists of lots of same text and a little bit of different text. Argon lets you create a bundle of templates (called a Stack) and generate different values into them! 
+Many a times in programming will there be some "scaffolding" needed for various projects, which usually consists of lots of same text and a little bit of different text. Argon lets you create a bundle of templates (called a 
+) and generate different values into them! 
 
 This is mostly for python cli's I make. While I could copy and paste everything and then do a few replaces, it's much more fun to automate.
 
@@ -18,7 +19,7 @@ A stack has **2** parts:
 * `stack.yaml` (optional) - Sets metadata used by argon to determine things like name and required values.
 * src (required) - this is the directory that **actually contains the files you want generated**
 
-### bundle.yaml values
+### stack.yaml values
 
 All fields are optional.
 
