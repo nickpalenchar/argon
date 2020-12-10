@@ -1,6 +1,6 @@
 # ARGON - a DIY generator for files and projects
 
-(!)[https://img.shields.io/badge/-WIP-red]
+![wip](https://img.shields.io/badge/-WIP-red)
 
 ## Motivation
 
