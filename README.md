@@ -1,4 +1,4 @@
-# ARGON - a DIY generator for files and projects
+# ARGON - a stupid-simple generator for files and projects
 
 ![wip](https://img.shields.io/badge/-WIP-red)
 
