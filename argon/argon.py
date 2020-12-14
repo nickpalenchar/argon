@@ -55,7 +55,6 @@ def list(args):
             try:
                 bundle = Stack(os.path.join(p, filename))
                 bundles.append(bundle.fmtstr())
-
             except InvalidBundle:
                 pass
     if not bundles:

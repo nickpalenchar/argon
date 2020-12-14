@@ -23,7 +23,7 @@ class Stack:
 
     def __init__(self, workdir):
         config = ChainMap(self._parse_yaml(workdir), self._get_defaults(workdir))
-        self.name = config['name']
+        self.name = self._get_defaults(workdir)['name']
         self.summary = config['summary']
         self.values = config['values']
 
@@ -48,7 +48,6 @@ class Stack:
             try:
                 with open(yaml_file) as fh:
                     bundle_config = yaml.safe_load(fh.read()) or {}
-
                     return bundle_config
             except (FileNotFoundError, NotADirectoryError):
                 pass
